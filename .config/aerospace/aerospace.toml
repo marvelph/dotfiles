@@ -74,12 +74,12 @@ outer.right =      8
 # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-cmd-keypadEqual = 'layout tiles horizontal vertical'
-cmd-keypadDivide = 'layout accordion horizontal vertical'
-cmd-keypadMultiply = 'layout floating tiling'
+cmd-keypadDivide = 'layout tiles horizontal vertical'
+cmd-keypadMultiply = 'layout accordion horizontal vertical'
+cmd-keypadDecimalMark = 'layout floating tiling'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#flatten-workspace-tree
-cmd-keypadClear = 'flatten-workspace-tree'
+cmd-ctrl-keypadClear = 'flatten-workspace-tree'
 	
 # See: https://nikictrltabobko.github.io/AeroSpace/commands#focus
 cmd-left = 'focus left --boundaries-action stop'
@@ -102,6 +102,7 @@ cmd-ctrl-right = 'join-with right'
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize
 cmd-keypadMinus = 'resize smart -50'
 cmd-keypadPlus = 'resize smart +50'
+cmd-keypadEqual = 'balance-sizes'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 cmd-keypad1 = 'workspace 1️⃣'
