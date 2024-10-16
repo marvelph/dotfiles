@@ -114,8 +114,6 @@ cmd-keypad6 = 'workspace 6️⃣'
 cmd-keypad7 = 'workspace 7️⃣'
 cmd-keypad8 = 'workspace 8️⃣'
 cmd-keypad9 = 'workspace 9️⃣'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 cmd-alt-left = 'workspace prev'
 cmd-alt-right = 'workspace next'
 
@@ -123,15 +121,17 @@ cmd-alt-right = 'workspace next'
 cmd-alt-tab = 'workspace-back-and-forth'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-cmd-shift-keypad1 = 'move-node-to-workspace 1️⃣'
-cmd-shift-keypad2 = 'move-node-to-workspace 2️⃣'
-cmd-shift-keypad3 = 'move-node-to-workspace 3️⃣'
-cmd-shift-keypad4 = 'move-node-to-workspace 4️⃣'
-cmd-shift-keypad5 = 'move-node-to-workspace 5️⃣'
-cmd-shift-keypad6 = 'move-node-to-workspace 6️⃣'
-cmd-shift-keypad7 = 'move-node-to-workspace 7️⃣'
-cmd-shift-keypad8 = 'move-node-to-workspace 8️⃣'
-cmd-shift-keypad9 = 'move-node-to-workspace 9️⃣'
+cmd-shift-keypad1 = 'move-node-to-workspace --focus-follows-window 1️⃣'
+cmd-shift-keypad2 = 'move-node-to-workspace --focus-follows-window 2️⃣'
+cmd-shift-keypad3 = 'move-node-to-workspace --focus-follows-window 3️⃣'
+cmd-shift-keypad4 = 'move-node-to-workspace --focus-follows-window 4️⃣'
+cmd-shift-keypad5 = 'move-node-to-workspace --focus-follows-window 5️⃣'
+cmd-shift-keypad6 = 'move-node-to-workspace --focus-follows-window 6️⃣'
+cmd-shift-keypad7 = 'move-node-to-workspace --focus-follows-window 7️⃣'
+cmd-shift-keypad8 = 'move-node-to-workspace --focus-follows-window 8️⃣'
+cmd-shift-keypad9 = 'move-node-to-workspace --focus-follows-window 9️⃣'
+cmd-alt-shift-left = 'move-node-to-workspace --focus-follows-window prev'
+cmd-alt-shift-right = 'move-node-to-workspace --focus-follows-window next'
 
 # See: https://nikitabobko.github.io/AeroSpace/guide#on-window-detected-callback
 [[on-window-detected]]
