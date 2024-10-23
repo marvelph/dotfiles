@@ -2,8 +2,8 @@
 
 options=(
 	width=8.0
-	active_color=0xff78b856
-	inactive_color=0xff989898
+	active_color=0xff83d754
+	inactive_color=0xff8695ad
 	hidpi=on
 )
 
