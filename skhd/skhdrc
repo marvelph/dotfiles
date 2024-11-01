@@ -1,0 +1,129 @@
+# ################################################################ #
+# THE FOLLOWING IS AN EXPLANATION OF THE GRAMMAR THAT SKHD PARSES. #
+# FOR SIMPLE EXAMPLE MAPPINGS LOOK FURTHER DOWN THIS FILE..        #
+# ################################################################ #
+
+# A list of all built-in modifier and literal keywords can
+# be found at https://github.com/koekeishiya/skhd/issues/1
+#
+# A hotkey is written according to the following rules:
+#
+#   hotkey       = <mode> '<' <action> | <action>
+#
+#   mode         = 'name of mode' | <mode> ',' <mode>
+#
+#   action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
+#                  <keysym> ':' <command>          | <keysym> '->' ':' <command>
+#                  <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
+#
+#   keysym       = <mod> '-' <key> | <key>
+#
+#   mod          = 'modifier keyword' | <mod> '+' <mod>
+#
+#   key          = <literal> | <keycode>
+#
+#   literal      = 'single letter or built-in keyword'
+#
+#   keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
+#
+#   proc_map_lst = * <proc_map>
+#
+#   proc_map     = <string> ':' <command> | <string>     '~' |
+#                  '*'      ':' <command> | '*'          '~'
+#
+#   string       = '"' 'sequence of characters' '"'
+#
+#   command      = command is executed through '$SHELL -c' and
+#                  follows valid shell syntax. if the $SHELL environment
+#                  variable is not set, it will default to '/bin/bash'.
+#                  when bash is used, the ';' delimeter can be specified
+#                  to chain commands.
+#
+#                  to allow a command to extend into multiple lines,
+#                  prepend '\' at the end of the previous line.
+#
+#                  an EOL character signifies the end of the bind.
+#
+#   ->           = keypress is not consumed by skhd
+#
+#   *            = matches every application not specified in <proc_map_lst>
+#
+#   ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
+#
+# A mode is declared according to the following rules:
+#
+#   mode_decl = '::' <name> '@' ':' <command> | '::' <name> ':' <command> |
+#               '::' <name> '@'               | '::' <name>
+#
+#   name      = desired name for this mode,
+#
+#   @         = capture keypresses regardless of being bound to an action
+#
+#   command   = command is executed through '$SHELL -c' and
+#               follows valid shell syntax. if the $SHELL environment
+#               variable is not set, it will default to '/bin/bash'.
+#               when bash is used, the ';' delimeter can be specified
+#               to chain commands.
+#
+#               to allow a command to extend into multiple lines,
+#               prepend '\' at the end of the previous line.
+#
+#               an EOL character signifies the end of the bind.
+
+# ############################################################### #
+# THE FOLLOWING SECTION CONTAIN SIMPLE MAPPINGS DEMONSTRATING HOW #
+# TO INTERACT WITH THE YABAI WM. THESE ARE SUPPOSED TO BE USED AS #
+# A REFERENCE ONLY, WHEN MAKING YOUR OWN CONFIGURATION..          #
+# ############################################################### #
+
+# focus window
+cmd - up : yabai -m window --focus north
+cmd - right : yabai -m window --focus east
+cmd - down : yabai -m window --focus south
+cmd - left : yabai -m window --focus west
+cmd - home : yabai -m window --focus stack.prev
+cmd - end : yabai -m window --focus stack.next
+
+# swap managed window
+shift + ctrl + cmd - up : yabai -m window --swap north
+shift + ctrl + cmd - right : yabai -m window --swap east
+shift + ctrl + cmd - down : yabai -m window --swap south
+shift + ctrl + cmd - left : yabai -m window --swap west
+
+# move managed window
+shift + cmd - up : yabai -m window --warp north
+shift + cmd - right : yabai -m window --warp east
+shift + cmd - down : yabai -m window --warp south
+shift + cmd - left : yabai -m window --warp west
+
+# stack managed window
+ctrl + cmd - up : yabai -m window --stack  north
+ctrl + cmd - right : yabai -m window --stack east
+ctrl + cmd - down : yabai -m window --stack south
+ctrl + cmd - left : yabai -m window --stack west
+
+# balance size of windows "="
+cmd - 0x51 : yabai -m space --balance
+
+# Flip the window tree
+shift + cmd - pageup : yabai -m space --mirror y-axis
+shift + cmd - pagedown : yabai -m space --mirror x-axis
+
+# Rotate the window tree
+cmd - pageup : yabai -m space --rotate 90
+cmd - pagedown : yabai -m space --rotate 270
+
+# increase window size "+"
+cmd - 0x45 : yabai -m window --ratio rel:0.1
+
+# decrease window size "-"
+cmd - 0x4E : yabai -m window --ratio rel:-0.1
+
+# toggle window zoom "*"
+cmd - 0x43 : yabai -m window --toggle zoom-fullscreen
+
+# toggle window split type "/"
+cmd - 0x4B: yabai -m window --toggle split
+
+# float / unfloat window and center on screen "."
+cmd - 0x41 : yabai -m window --toggle float --grid 4:4:1:1:2:2
