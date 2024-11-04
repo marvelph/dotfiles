@@ -24,7 +24,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 24
+accordion-padding = 16
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -78,8 +78,11 @@ cmd-keypadDivide = 'layout tiles horizontal vertical'
 cmd-keypadMultiply = 'layout accordion horizontal vertical'
 cmd-keypadDecimalMark = 'layout floating tiling'
 
+# See: https://nikitabobko.github.io/AeroSpace/commands#fullscreen
+cmd-keypadEnter = 'fullscreen'
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#flatten-workspace-tree
-cmd-ctrl-keypadClear = 'flatten-workspace-tree'
+cmd-keypadClear = 'flatten-workspace-tree'
 	
 # See: https://nikictrltabobko.github.io/AeroSpace/commands#focus
 cmd-left = 'focus left --boundaries-action stop'
@@ -116,9 +119,6 @@ cmd-keypad8 = 'workspace 8️⃣'
 cmd-keypad9 = 'workspace 9️⃣'
 cmd-alt-left = 'workspace prev'
 cmd-alt-right = 'workspace next'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-cmd-alt-tab = 'workspace-back-and-forth'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 cmd-shift-keypad1 = 'move-node-to-workspace --focus-follows-window 1️⃣'
