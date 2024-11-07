@@ -39,3 +39,9 @@ end
 
 hs.hotkey.bind({ "alt" }, "tab", nextWindow)
 hs.hotkey.bind({ "alt", "shift" }, "tab", previousWindow)
+
+function onWorkspaceChange(eventName, params)
+    hs.alert.show("workspace " .. params["focused-workspace"])
+end
+
+hs.urlevent.bind("exec-on-workspace-change", onWorkspaceChange)
