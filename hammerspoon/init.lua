@@ -1,44 +1,30 @@
-WindowFilter = {}
-
-function WindowFilter:new()
-    local obj = { ids = nil }
-    self.__index = self
-    return setmetatable(obj, self)
+function chooserCompletion(choice)
+    if choice then
+        hs.execute("/opt/homebrew/bin/aerospace focus --window-id " .. choice.windowId)
+    end
 end
 
-function WindowFilter:update()
-    local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --json")
+chooser = hs.chooser.new(chooserCompletion)
+
+function focusWindow()
+    local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
     local items = hs.json.decode(output)
-    self.ids = {}
+    local choices = {}
     for i, item in ipairs(items) do
-        table.insert(self.ids, item["window-id"])
+        local choice = {
+            text = item["window-title"],
+            subText = item["app-name"],
+            image = hs.image.imageFromAppBundle(item["app-bundle-id"]),
+            windowId = item["window-id"]
+        }
+        table.insert(choices, choice)
     end
+    chooser:choices(choices)
+
+    chooser:show()
 end
 
-function WindowFilter:getWindows(sortOrder)
-    local windows = {}
-    for i, id in ipairs(self.ids) do
-        local window = hs.window.get(id)
-        table.insert(windows, window)
-    end
-    return windows
-end
-
-switcher = hs.window.switcher.new()
-switcher.wf = WindowFilter:new()
-
-function nextWindow()
-    switcher.wf:update()
-    switcher:next()
-end
-
-function previousWindow()
-    switcher.wf:update()
-    switcher:previous()
-end
-
-hs.hotkey.bind({ "alt" }, "tab", nextWindow)
-hs.hotkey.bind({ "alt", "shift" }, "tab", previousWindow)
+hs.hotkey.bind({ "alt", "cmd" }, "down", focusWindow)
 
 function onWorkspaceChange(eventName, params)
     hs.alert.show("workspace " .. params["focused-workspace"])
