@@ -14,8 +14,22 @@ function selectWorkspace()
     local workspaces = hs.json.decode(output)
     local choices = {}
     for _, workspace in ipairs(workspaces) do
+        local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace " .. workspace["workspace"] .. " --format %{app-bundle-id}%{app-name} --json")
+        local windows = hs.json.decode(output)
+        local subText = nil
+        local image = nil
+        for _, window in ipairs(windows) do
+            if not subText then
+                subText = window["app-name"]
+                image = hs.image.imageFromAppBundle(window["app-bundle-id"])
+            else
+                subText = subText .. ", " .. window["app-name"]
+            end
+        end
         local choice = {
             text = "workspace " .. workspace["workspace"],
+            subText = subText,
+            image = image,
             workspace = workspace["workspace"]
         }
         table.insert(choices, choice)
