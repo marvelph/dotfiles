@@ -11,12 +11,12 @@ function selectWorkspace()
     windowChooser:cancel()
 
     local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --empty no --json")
-    local items = hs.json.decode(output)
+    local workspaces = hs.json.decode(output)
     local choices = {}
-    for i, item in ipairs(items) do
+    for _, workspace in ipairs(workspaces) do
         local choice = {
-            text = "workspace " .. item["workspace"],
-            workspace = item["workspace"]
+            text = "workspace " .. workspace["workspace"],
+            workspace = workspace["workspace"]
         }
         table.insert(choices, choice)
     end
@@ -40,14 +40,14 @@ function selectWindow()
     windowChooser:cancel()
 
     local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
-    local items = hs.json.decode(output)
+    local windows = hs.json.decode(output)
     local choices = {}
-    for i, item in ipairs(items) do
+    for _, window in ipairs(windows) do
         local choice = {
-            text = item["window-title"],
-            subText = item["app-name"],
-            image = hs.image.imageFromAppBundle(item["app-bundle-id"]),
-            windowId = item["window-id"]
+            text = window["window-title"],
+            subText = window["app-name"],
+            image = hs.image.imageFromAppBundle(window["app-bundle-id"]),
+            windowId = window["window-id"]
         }
         table.insert(choices, choice)
     end
