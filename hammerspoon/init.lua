@@ -1,14 +1,17 @@
-function workspaceChooserCompletion(choice)
+function chooserCompletion(choice)
     if choice then
-        hs.execute("/opt/homebrew/bin/aerospace workspace " .. choice.workspace)
+        if choice.workspace then
+            hs.execute("/opt/homebrew/bin/aerospace workspace " .. choice.workspace)
+        elseif choice.windowId then
+            hs.execute("/opt/homebrew/bin/aerospace focus --window-id " .. choice.windowId)
+        end
     end
 end
 
-workspaceChooser = hs.chooser.new(workspaceChooserCompletion)
+chooser = hs.chooser.new(chooserCompletion)
 
 function selectWorkspace()
-    workspaceChooser:cancel()
-    windowChooser:cancel()
+    chooser:cancel()
 
     local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --empty no --json")
     local workspaces = hs.json.decode(output)
@@ -34,24 +37,13 @@ function selectWorkspace()
         }
         table.insert(choices, choice)
     end
-    workspaceChooser:choices(choices)
+    chooser:choices(choices)
 
-    workspaceChooser:show()
+    chooser:show()
 end
-
-hs.hotkey.bind({ "alt", "cmd" }, "up", selectWorkspace)
-
-function windowChooserCompletion(choice)
-    if choice then
-        hs.execute("/opt/homebrew/bin/aerospace focus --window-id " .. choice.windowId)
-    end
-end
-
-windowChooser = hs.chooser.new(windowChooserCompletion)
 
 function selectWindow()
-    workspaceChooser:cancel()
-    windowChooser:cancel()
+    chooser:cancel()
 
     local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
     local windows = hs.json.decode(output)
@@ -65,15 +57,15 @@ function selectWindow()
         }
         table.insert(choices, choice)
     end
-    windowChooser:choices(choices)
+    chooser:choices(choices)
 
-    windowChooser:show()
+    chooser:show()
 end
-
-hs.hotkey.bind({ "alt", "cmd" }, "down", selectWindow)
 
 function onWorkspaceChange(eventName, params)
     hs.alert.show("workspace " .. params["focused-workspace"])
 end
 
+hs.hotkey.bind({ "alt", "cmd" }, "up", selectWorkspace)
+hs.hotkey.bind({ "alt", "cmd" }, "down", selectWindow)
 hs.urlevent.bind("exec-on-workspace-change", onWorkspaceChange)
