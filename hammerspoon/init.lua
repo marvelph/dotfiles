@@ -1,12 +1,44 @@
-function chooserCompletion(choice)
+function workspaceChooserCompletion(choice)
+    if choice then
+        hs.execute("/opt/homebrew/bin/aerospace workspace " .. choice.workspace)
+    end
+end
+
+workspaceChooser = hs.chooser.new(workspaceChooserCompletion)
+
+function selectWorkspace()
+    workspaceChooser:cancel()
+    windowChooser:cancel()
+
+    local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --empty no --json")
+    local items = hs.json.decode(output)
+    local choices = {}
+    for i, item in ipairs(items) do
+        local choice = {
+            text = "workspace " .. item["workspace"],
+            workspace = item["workspace"]
+        }
+        table.insert(choices, choice)
+    end
+    workspaceChooser:choices(choices)
+
+    workspaceChooser:show()
+end
+
+hs.hotkey.bind({ "alt", "cmd" }, "up", selectWorkspace)
+
+function windowChooserCompletion(choice)
     if choice then
         hs.execute("/opt/homebrew/bin/aerospace focus --window-id " .. choice.windowId)
     end
 end
 
-chooser = hs.chooser.new(chooserCompletion)
+windowChooser = hs.chooser.new(windowChooserCompletion)
 
-function focusWindow()
+function selectWindow()
+    workspaceChooser:cancel()
+    windowChooser:cancel()
+
     local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
     local items = hs.json.decode(output)
     local choices = {}
@@ -19,12 +51,12 @@ function focusWindow()
         }
         table.insert(choices, choice)
     end
-    chooser:choices(choices)
+    windowChooser:choices(choices)
 
-    chooser:show()
+    windowChooser:show()
 end
 
-hs.hotkey.bind({ "alt", "cmd" }, "down", focusWindow)
+hs.hotkey.bind({ "alt", "cmd" }, "down", selectWindow)
 
 function onWorkspaceChange(eventName, params)
     hs.alert.show("workspace " .. params["focused-workspace"])
