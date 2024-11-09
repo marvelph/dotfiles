@@ -81,7 +81,7 @@ function updateMenubar(workspaceName)
     for _, workspaceJson in ipairs(workspacesJson) do
         local workspaceTitle = workspaceJson["workspace"]
         if workspaceTitle == workspaceName then
-            workspaceTitle = "[" .. workspaceTitle .. "]"
+            workspaceTitle = "[ " .. workspaceTitle .. " ]"
         end
         if not title then
             title = workspaceTitle
