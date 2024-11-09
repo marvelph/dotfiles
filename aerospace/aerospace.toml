@@ -37,7 +37,7 @@ default-root-container-orientation = 'auto'
 automatically-unhide-macos-hidden-apps = false
 
 # See: https://nikitabobko.github.io/AeroSpace/guide#exec-on-workspace-change-callback
-exec-on-workspace-change = ["/bin/bash", "-c", "/usr/bin/open -g hammerspoon://exec-on-workspace-change?focused-workspace=${AEROSPACE_FOCUSED_WORKSPACE}"]
+exec-on-workspace-change = ["/bin/bash", "-c", "/usr/bin/open -g hammerspoon://on-workspace-change?focused-workspace=${AEROSPACE_FOCUSED_WORKSPACE}"]
 
 # Possible values: (qwerty|dvorak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping

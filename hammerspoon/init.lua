@@ -101,4 +101,4 @@ end
 
 hs.hotkey.bind({ "alt", "cmd" }, "up", selectWorkspace)
 hs.hotkey.bind({ "alt", "cmd" }, "down", selectWindow)
-hs.urlevent.bind("exec-on-workspace-change", onWorkspaceChange)
+hs.urlevent.bind("on-workspace-change", onWorkspaceChange)
