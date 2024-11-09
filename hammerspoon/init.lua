@@ -80,7 +80,7 @@ function updateMenubar(workspaceName)
     local title = nil
     for _, workspaceJson in ipairs(workspacesJson) do
         local workspaceTitle = workspaceJson["workspace"]
-        if (not workspaceName and not title) or workspaceTitle == workspaceName then
+        if workspaceTitle == workspaceName then
             workspaceTitle = "[" .. workspaceTitle .. "]"
         end
         if not title then
