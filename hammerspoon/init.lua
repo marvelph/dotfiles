@@ -14,26 +14,26 @@ function selectWorkspace()
     chooser:cancel()
 
     local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --empty no --json")
-    local workspaces = hs.json.decode(output)
+    local workspacesJson = hs.json.decode(output)
     local choices = {}
-    for _, workspace in ipairs(workspaces) do
-        local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace " .. workspace["workspace"] .. " --format %{app-bundle-id}%{app-name} --json")
-        local windows = hs.json.decode(output)
+    for _, workspaceJson in ipairs(workspacesJson) do
+        local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace " .. workspaceJson["workspace"] .. " --format %{app-bundle-id}%{app-name} --json")
+        local windowsJson = hs.json.decode(output)
         local subText = nil
         local image = nil
-        for _, window in ipairs(windows) do
+        for _, windowJson in ipairs(windowsJson) do
             if not subText then
-                subText = window["app-name"]
-                image = hs.image.imageFromAppBundle(window["app-bundle-id"])
+                subText = windowJson["app-name"]
+                image = hs.image.imageFromAppBundle(windowJson["app-bundle-id"])
             else
-                subText = subText .. ", " .. window["app-name"]
+                subText = subText .. ", " .. windowJson["app-name"]
             end
         end
         local choice = {
-            text = "workspace " .. workspace["workspace"],
+            text = "workspace " .. workspaceJson["workspace"],
             subText = subText,
             image = image,
-            workspace = workspace["workspace"]
+            workspace = workspaceJson["workspace"]
         }
         table.insert(choices, choice)
     end
@@ -46,14 +46,14 @@ function selectWindow()
     chooser:cancel()
 
     local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
-    local windows = hs.json.decode(output)
+    local windowsJson = hs.json.decode(output)
     local choices = {}
-    for _, window in ipairs(windows) do
+    for _, windowJson in ipairs(windowsJson) do
         local choice = {
-            text = window["window-title"],
-            subText = window["app-name"],
-            image = hs.image.imageFromAppBundle(window["app-bundle-id"]),
-            windowId = window["window-id"]
+            text = windowJson["window-title"],
+            subText = windowJson["app-name"],
+            image = hs.image.imageFromAppBundle(windowJson["app-bundle-id"]),
+            windowId = windowJson["window-id"]
         }
         table.insert(choices, choice)
     end
