@@ -13,11 +13,17 @@ chooser = hs.chooser.new(chooserCompletion)
 function selectWorkspace()
     chooser:cancel()
 
-    local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --empty no --json")
+    local output, status = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --empty no --json")
+    if not status then
+        return
+    end
     local workspacesJson = hs.json.decode(output)
     local choices = {}
     for _, workspaceJson in ipairs(workspacesJson) do
-        local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace " .. workspaceJson["workspace"] .. " --format %{app-bundle-id}%{app-name} --json")
+        local output, status = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace " .. workspaceJson["workspace"] .. " --format %{app-bundle-id}%{app-name} --json")
+        if not status then
+            return
+        end
         local windowsJson = hs.json.decode(output)
         local subText = nil
         local image = nil
@@ -45,7 +51,10 @@ end
 function selectWindow()
     chooser:cancel()
 
-    local output = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
+    local output, status = hs.execute("/opt/homebrew/bin/aerospace list-windows --workspace focused --format %{window-id}%{window-title}%{app-bundle-id}%{app-name} --json")
+    if not status then
+        return
+    end
     local windowsJson = hs.json.decode(output)
     local choices = {}
     for _, windowJson in ipairs(windowsJson) do
@@ -63,7 +72,10 @@ function selectWindow()
 end
 
 function updateMenubar(workspaceName)
-    local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --json")
+    local output, status = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --json")
+    if not status then
+        return
+    end
     local workspacesJson = hs.json.decode(output)
     local title = nil
     for _, workspaceJson in ipairs(workspacesJson) do
