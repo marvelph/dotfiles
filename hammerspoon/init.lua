@@ -1,7 +1,7 @@
 function chooserCompletion(choice)
     if choice then
-        if choice.workspace then
-            hs.execute("/opt/homebrew/bin/aerospace workspace " .. choice.workspace)
+        if choice.workspaceName then
+            hs.execute("/opt/homebrew/bin/aerospace workspace " .. choice.workspaceName)
         elseif choice.windowId then
             hs.execute("/opt/homebrew/bin/aerospace focus --window-id " .. choice.windowId)
         end
@@ -33,7 +33,7 @@ function selectWorkspace()
             text = "workspace " .. workspaceJson["workspace"],
             subText = subText,
             image = image,
-            workspace = workspaceJson["workspace"]
+            workspaceName = workspaceJson["workspace"]
         }
         table.insert(choices, choice)
     end
@@ -62,8 +62,29 @@ function selectWindow()
     chooser:show()
 end
 
+function updateMenubar(workspaceName)
+    local output = hs.execute("/opt/homebrew/bin/aerospace list-workspaces --monitor focused --json")
+    local workspacesJson = hs.json.decode(output)
+    local title = nil
+    for _, workspaceJson in ipairs(workspacesJson) do
+        local workspaceTitle = workspaceJson["workspace"]
+        if (not workspaceName and not title) or workspaceTitle == workspaceName then
+            workspaceTitle = "[" .. workspaceTitle .. "]"
+        end
+        if not title then
+            title = workspaceTitle
+        else
+            title = title .. " " .. workspaceTitle
+        end
+    end
+    menubar:setTitle(title)
+end
+
+menubar = hs.menubar.new()
+updateMenubar(nil)
+
 function onWorkspaceChange(eventName, params)
-    hs.alert.show("workspace " .. params["focused-workspace"])
+    updateMenubar(params["focused-workspace"])
 end
 
 hs.hotkey.bind({ "alt", "cmd" }, "up", selectWorkspace)
