@@ -97,6 +97,8 @@ updateMenubar(nil)
 
 function onWorkspaceChange(eventName, params)
     updateMenubar(params["focused-workspace"])
+
+    hs.alert.show("workspace " .. params["focused-workspace"])
 end
 
 hs.hotkey.bind({ "alt", "cmd" }, "up", selectWorkspace)
