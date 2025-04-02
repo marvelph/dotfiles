@@ -41,6 +41,3 @@ PaperWM:bindHotkeys({
 })
 PaperWM.window_filter:rejectApp("ClipBook")
 PaperWM:start()
-
-ActiveSpace = hs.loadSpoon("ActiveSpace")
-ActiveSpace:start()
