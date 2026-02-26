@@ -1,0 +1,9 @@
+{
+    "editor.renderWhitespace": "trailing",
+    "editor.minimap.enabled": false,
+    "terminal.integrated.fontFamily": "Hack Nerd Font Mono",
+    "terminal.integrated.macOptionIsMeta": true,
+    "dart.flutterSdkPath": "/opt/homebrew/share/flutter",
+    "workbench.editor.swipeToNavigate": true,
+    "editor.fontFamily": "SF Mono"
+}
