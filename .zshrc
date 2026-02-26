@@ -1,6 +1,6 @@
 source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
-source ~/bin/aws-switch.sh
+source ~/bin/aws-profile.sh
 
 eval "$(starship init zsh)"
 
