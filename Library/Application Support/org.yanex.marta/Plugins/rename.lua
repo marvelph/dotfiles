@@ -141,24 +141,61 @@ action {
             return
         end
 
+        local renames = {}
         local model = context.activePane.model
         local index = 1
         for _, info in ipairs(model.activeFileInfos) do
             if info.isFile then
                 local file = info.file
                 local name = buildName(pattern, index, file.nameWithoutExtension, file.extension)
-                local error = file:rename(file.parent:resolve(name).path)
-                if error then
-                    local text = "Can't rename \"" .. file.nameWithoutExtension .. "\""
-                    local message = error.description .. "\n\n"
-                    message = message .. "Full path: " .. tostring(file.path)
-                    local button = alert(text, message, "warning", {"Skip", "Abort"}, "Abort", "Skip")
-                    if button == "Abort" then
-                        return
-                    end
-                end
-
+                table.insert(renames, {info = info, file = file, name = name})
                 index = index + 1
+            end
+        end
+
+        local names = {}
+        for _, rename in ipairs(renames) do
+            if names[rename.name] then
+                local text = "Rename conflict:\n"
+                text = text .. names[rename.name] .. " → " .. rename.name .. " ← " .. rename.file.name
+                alert(text, nil, "warning", {"Abort"}, "Abort")
+                return
+            end
+            names[rename.name] = rename.file.name
+        end
+
+        for _, rename in ipairs(renames) do
+            local file = rename.file.parent:resolve(rename.name)
+            if file:exists() then
+                local _, info = file:readInfo({"dateModified", "size"})
+                local text = "File already exists:\n"
+                text = text .. rename.file.name .. " → " .. file.name
+                local message = "Existing:\n"
+                if info then
+                    message = message .. os.date("%Y-%m-%d %H:%M:%S", info.dateModified) .. ", " .. martax.formatSize(info.size) .. "\n"
+                else
+                    message = message .. "\n"
+                end
+                message = message .. tostring(file.path) .. "\n\n"
+                message = message .. "New:\n"
+                message = message .. os.date("%Y-%m-%d %H:%M:%S", rename.info.dateModified) .. ", " .. martax.formatSize(rename.info.size) .. "\n"
+                message = message .. tostring(rename.file.path)
+                alert(text, message, "informational", {"Abort"}, "Abort")
+                return
+            end
+        end
+
+        for _, rename in ipairs(renames) do
+            local file = rename.file.parent:resolve(rename.name)
+            local error = rename.file:rename(file.path)
+            if error then
+                local text = "Can't rename \"" .. rename.file.name .. "\""
+                local message = error.description .. "\n\n"
+                message = message .. "Full path: " .. tostring(rename.file.path)
+                local button = alert(text, message, "warning", {"Skip", "Abort"}, "Abort", "Skip")
+                if button == "Abort" then
+                    return
+                end
             end
         end
     end
