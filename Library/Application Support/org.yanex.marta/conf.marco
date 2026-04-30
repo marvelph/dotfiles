@@ -1,6 +1,6 @@
 environment {
     terminal "Ghostty"
-    textEditor "CotEditor"
+    textEditor "Zed"
 }
 
 behavior {
